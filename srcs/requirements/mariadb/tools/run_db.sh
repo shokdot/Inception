@@ -1,16 +1,27 @@
 #!/bin/bash
 
-service mysql start 
+mysqld_safe --datadir=/var/lib/mysql &
 
-echo "CREATE DATABASE IF NOT EXISTS $MYSQL_DB ;" > db.sql
-echo "CREATE USER IF NOT EXISTS '$MYSQL_USER'@'%' IDENTIFIED BY '$MYSQL_PASSWORD' ;" >> db.sql
-echo "GRANT ALL PRIVILEGES ON $MYSQL_DB.* TO '$MYSQL_USER'@'%' ;" >> db.sql
-echo "FLUSH PRIVILEGES;" >> db.sql
+max_attempts=20
+attempt=0
 
-mysql < db.sql
+while ! mysqladmin ping --silent; do
+    attempt=$((attempt + 1))
+    
+    if [ "$attempt" -ge "$max_attempts" ]; then
+        echo "MariaDB did not respond after $max_attempts attempts. Exiting..."
+        exit 1
+    fi
+    sleep 1
+done
 
-sleep 2
+mysql <<EOF
+CREATE DATABASE IF NOT EXISTS \`$MYSQL_DB\`;
+CREATE USER IF NOT EXISTS '$MYSQL_USER'@'%' IDENTIFIED BY '$MYSQL_PASSWORD';
+GRANT ALL PRIVILEGES ON \`$MYSQL_DB\`.* TO '$MYSQL_USER'@'%';
+FLUSH PRIVILEGES;
+EOF
 
-kill $(cat /var/run/mysqld/mysqld.pid)
+mysqladmin shutdown
 
-mysqld
+exec mysqld --datadir=/var/lib/mysql
