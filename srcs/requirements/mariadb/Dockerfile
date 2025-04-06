@@ -2,7 +2,8 @@ FROM debian:12
 
 RUN apt update && apt upgrade -y
 
-RUN apt install mariadb-server mariadb-client -y \
+RUN apt install mariadb-server -y && \
+	apt install mariadb-client -y \
 	apt clean && \
 	rm -rf /var/lib/apt/lists/*
 
