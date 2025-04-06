@@ -2,9 +2,7 @@ FROM debian:12
 
 RUN apt update && apt upgrade -y
 
-RUN apt install mariadb-server -y && \
-	apt install mariadb-client -y \
-	apt clean && \
+RUN apt install mariadb-server mariadb-client -y && \
 	rm -rf /var/lib/apt/lists/*
 
 COPY ./conf/50-server.cnf /etc/mysql/mariadb.conf.d/
