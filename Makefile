@@ -16,7 +16,6 @@ up:
 	@$(MKDIR) $(WP_DIR)
 	@$(COMPOSE) up -d --build
 	
-
 down:
 	@echo "Making Down!"
 	@$(COMPOSE) down
@@ -28,6 +27,7 @@ clean: down
 fclean:
 	@echo "Making fclean!"
 	@$(COMPOSE) down --volumes --rmi all --remove-orphans || true
+	@docker system prune -af
 	@docker network prune --force
 	@$(RM) $(DATA_DIR)
 
