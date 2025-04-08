@@ -14,13 +14,25 @@ services:
     volumes:
       - wp_volume:/var/www/html
     depends_on:
+      - wordpress
+  wordpress:
+    container_name: wordpress
+    build:
+      context: ./requirements/wordpress
+      dockerfile: Dockerfile
+    networks:
+      - inception
+    volumes:
+      - wp_volume:/var/www/html
+    ports:
+      - "9000:9000"
+    env_file:
+      - .env
+    depends_on:
       - mariadb
-  # wordpress:
-  #   container_name: wordpress
-  #   build:
-  #     context: ./requirements/wordpress
-  #     dockerfile: Dockerfile
+    restart: always
   mariadb:
+    container_name: mariadb
     build:
       context: ./requirements/mariadb
       dockerfile: Dockerfile

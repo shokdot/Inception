@@ -34,4 +34,6 @@ fclean:
 
 re: fclean all
 
-.PHONY: all up down clean fclean re
+restart: down up
+
+.PHONY: all up down clean fclean re restart
