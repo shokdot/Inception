@@ -95,6 +95,16 @@ services:
     ports:
       - "8080:8080"
     restart: always
+  flask:
+    container_name: flask
+    build:
+      context: ./requirements/bonus/flask
+      dockerfile: Dockerfile
+    networks:
+      - inception
+    ports:
+      - "3000:3000"
+    restart: always
 
 volumes:
   wp_volume:
