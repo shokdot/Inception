@@ -29,7 +29,8 @@ services:
     env_file:
       - .env
     depends_on:
-      - mariadb
+      mariadb:
+        condition: service_healthy
     restart: always
   mariadb:
     container_name: mariadb
@@ -64,6 +65,20 @@ services:
       - "40000-40010:40000-40010"
     env_file:
       - .env
+    restart: always
+  redis:
+    container_name: redis
+    depends_on:
+      - wordpress
+    build:
+      context: ./requirements/bonus/redis
+      dockerfile: Dockerfile
+    ports:
+      - "6379:6379"
+    env_file:
+      - .env
+    networks:
+      - inception
     restart: always
 
 volumes:

@@ -35,6 +35,13 @@ else
       echo "\033[32mWordPress tables already exist. Skipping installation.\033[0m"
 fi
 
+wp plugin install redis-cache --activate --allow-root
+wp config set WP_REDIS_HOST $REDIS_HOSTNAME --allow-root
+wp config set WP_REDIS_PORT $REDIS_PORT --raw --allow-root
+wp config set WP_CACHE_KEY_SALT $DOMAIN_NAME --allow-root
+wp config set WP_REDIS_PASSWORD $REDIS_PASSWORD --allow-root
+wp config set WP_REDIS_CLIENT phpredis --allow-root
+
 if wp core update --allow-root; then
     echo "\033[32mWordPress core updated successfully.\033[0m"
 else
