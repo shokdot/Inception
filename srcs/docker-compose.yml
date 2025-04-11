@@ -50,6 +50,21 @@ services:
       timeout: 5s
       retries: 5
     restart: always
+  ftp:
+    container_name: ftp
+    build:
+      context: ./requirements/bonus/ftp
+      dockerfile: Dockerfile
+    networks:
+      - inception
+    volumes:
+      - wp_volume:/var/www/html
+    ports:
+      - 21:21
+      - "40000-40010:40000-40010"
+    env_file:
+      - .env
+    restart: always
 
 volumes:
   wp_volume:
