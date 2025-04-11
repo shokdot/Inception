@@ -80,6 +80,21 @@ services:
     networks:
       - inception
     restart: always
+  adminer:
+    container_name: adminer
+    depends_on:
+      - wordpress
+      - mariadb
+    build:
+      context: ./requirements/bonus/adminer
+      dockerfile: Dockerfile
+    networks:
+      - inception
+    env_file:
+      - .env
+    ports:
+      - "8080:8080"
+    restart: always
 
 volumes:
   wp_volume:
