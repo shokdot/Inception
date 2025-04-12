@@ -105,18 +105,33 @@ services:
     ports:
       - "3000:3000"
     restart: always
+  cadvisor:
+    container_name: cadvisor
+    build:
+      context: ./requirements/bonus/cadvisor
+      dockerfile: Dockerfile
+    networks:
+      - inception
+    ports:
+      - "2843:2843"
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+    restart: always
 
 volumes:
   wp_volume:
     driver: local
     driver_opts:
-      device: /Users/hen/data/wordpress
+      device: /home/healeksa/data/wordpress
       o: bind
       type: none
   db_volume:
     driver: local
     driver_opts:
-      device: /Users/hen/data/mariadb
+      device: /home/healeksa/data/mariadb
       o: bind
       type: none
 
