@@ -26,10 +26,10 @@ clean: down
 
 fclean:
 	@echo "Making fclean!"
-	@$(COMPOSE) down --volumes --rmi all --remove-orphans || true
-	@docker system prune -af
-	@docker network prune --force
-	@$(RM) $(DATA_DIR)
+	@$(COMPOSE) down --volumes --rmi all --remove-orphans > /dev/null 2>&1 || true
+	@docker system prune -af > /dev/null 2>&1
+	@docker network prune --force > /dev/null 2>&1
+	@sudo $(RM) $(DATA_DIR)
 
 
 re: fclean all
